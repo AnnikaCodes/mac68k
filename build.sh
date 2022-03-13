@@ -9,7 +9,8 @@ function green_echo() {
 }
 
 green_echo "Compiling Zig code..."
-mkdir -p build
+rm -rf build
+mkdir build
 zig build-obj -target m68k-freestanding src/enter.zig -fno-LLVM -ofmt=c -femit-bin=build/enter.c
 # yes, I hate this too, but Zig expects a stdint.h and 128-bit int types that
 # cross compilers can't seem to handle (at least on an x86_64 macOS host)
@@ -18,10 +19,7 @@ sed -i'.bak' 's/^.*int128_t.*$/ /g' build/*.c
 m68k-elf-gcc -nostdlib -c -o build/enter.o build/enter.c
 
 green_echo "Compiling 68k assembly..."
-m68k-elf-gcc src/init.s -c -o "build/asm.o" -nostdlib
-
-green_echo "Linking..."
-m68k-elf-ld build/*.o -o build/linked
+m68k-elf-gcc src/init.s build/*.o  -o "build/linked" -nostdlib
 
 green_echo "Converting to floppy disk image..."
 m68k-elf-objcopy -O binary build/linked floppy.img
