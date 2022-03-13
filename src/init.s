@@ -1,8 +1,8 @@
 # A very small bootloader in m68k Assembly to immediately invoke Rust code
 # Largely based on https://github.com/jrsharp/HappyJon/blob/master/demo.s
-.extern rust_entry
+.extern zig_entry
 
-.include "src/asm/macos.i"
+.include "include/macos.i"
 
 # The ROM loads this many bytes from the start of the disk.
 .equ stage1_size, 1024
@@ -28,7 +28,7 @@ CntEvts:     .short  20                  /* number of event queue elements */
 Heap128K:    .long   0x00004300          /* system heap size on 128K Mac */
 Heap256K:    .long   0x00008000          /* used internally */
 SysHeapSize: .long   0x00020000          /* system heap size on all machines */
-.include "src/asm/floppy.i"
+.include "include/floppy.i"
 
 	/* Set up Heap: */
 start:
@@ -74,7 +74,7 @@ end:
 /* Start the framebuffer stuff: */
 start_fb:
 	/* movel	#0x3FA700, %a0 */ /* Start of framebuffer on 4MB Plus */
-    bsr rust_entry
+    bsr zig_entry
 	movel	(ScrnBase), %a0
 
 	/* clear screen */

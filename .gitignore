@@ -1,5 +1,5 @@
-/target
+/build
 /floppy.img
 
-/Cargo.lock
+zig-cache/
 .DS_Store
