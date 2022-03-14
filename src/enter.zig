@@ -1,7 +1,7 @@
 const framebuffer_start_pointer: *u32 = @intToPtr(*u32, 0x824);
 const HEIGHT: u32 = 342;
 const WIDTH: u32 = 512;
-const FRAMEBUFFER_LENGTH: u32 = HEIGHT * WIDTH;
+const TOTAL_32_BIT_CHUNKS: u32 = @divTrunc(512 * 342, 32);
 
 fn systemError(_: u16) callconv(.C) void {
     // Zig bug: binding causes a segfault in compilation
@@ -53,12 +53,22 @@ fn naiveFillScreen(color: Color) void {
     }
 }
 
-
+fn fastFillScreen(color: Color) void {
+    const fill: u32 = switch (color) {
+        .Black => 0xFFFFFFFF,
+        .White => 0x00000000,
+    };
+    var chunksSoFar: u32 = 0;
+    while (chunksSoFar < TOTAL_32_BIT_CHUNKS) : (chunksSoFar += 1) {
+        const next32 = @intToPtr(*u32, framebuffer_start_pointer.* + chunksSoFar * 4);
+        next32.* = fill;
+    }
+}
 
 export fn zigEntry() void {
     // Welcome to Zig!
     while (true) {
-        naiveFillScreen(.Black);
-        naiveFillScreen(.White);
+        fastFillScreen(.White);
+        fastFillScreen(.Black);
     }
 }
