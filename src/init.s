@@ -2,7 +2,7 @@
 # Based on HappyJon (https://github.com/jrsharp/HappyJon/blob/master/demo.s
 # and the EMILE bootloader (https://github.com/vivier/EMILE).
 
-.extern zig_entry
+.extern zigEntry
 
 .include "include/macos.i"
 
@@ -60,7 +60,7 @@ end:
 call_zig:
 #	move.w #0xAAAA,%d0
 #	.short 0xA9C9
-    bsr zig_entry
+    bsr zigEntry
 PRAM_buffer2:
 	.long	0
 end2:

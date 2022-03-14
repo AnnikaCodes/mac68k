@@ -1,13 +1,64 @@
-fn system_error(_: u32) callconv(.C) void {
-  asm volatile (
-    // All the moves are to get to the arg :(
-    // Binding causes a segfault in compilation
-    "move (%sp)+,%d0;move (%sp)+,%d0;move (%sp)+,%d0;move (%sp)+,%d0;move (%sp)+,%d0;move (%sp)+,%d0;.short 0xA9C9"
-  );
+const framebuffer_start_pointer: *u32 = @intToPtr(*u32, 0x824);
+const HEIGHT: u32 = 342;
+const WIDTH: u32 = 512;
+const FRAMEBUFFER_LENGTH: u32 = HEIGHT * WIDTH;
+
+fn systemError(_: u16) callconv(.C) void {
+    // Zig bug: binding causes a segfault in compilation
+    asm volatile ("move.l (%sp)+,%d0; .short 0xA9C9");
 }
 
-export fn zig_entry() callconv(.C) void {
-  // Welcome to Zig!
-  system_error(0xEDCB);
-  while (true) {}
+fn wasteTime(amount: u32) void {
+    var i: u32 = 0;
+    while (i < amount * 10000) {
+        i += 1;
+    }
+}
+
+const Color = enum {
+    Black,
+    White,
+};
+
+fn drawPixel(color: Color, x: u16, y: u16) void {
+    if (y >= HEIGHT or x >= WIDTH) {
+        return; // should probably throw an error once we can
+    }
+
+    var offset: u32 = y * WIDTH + x;
+    const byteOffset: u32 = @divTrunc(offset, 8);
+    const bitOffset: u3 = 7 - @intCast(u3, offset % 8);
+
+    // TODO: investigate using a u1 here?
+    const next8: *u8 = @intToPtr(*u8, framebuffer_start_pointer.* + byteOffset);
+    const one: u8 = 1;
+    switch (color) {
+        // Make the first bit (pixel) a 1 (black) and leave the rest as they are
+        .Black => next8.* |= one << bitOffset,
+        // Make the first bit (pixel) a 0 (white) and leave the rest as they are
+        .White => next8.* &= ~(one << bitOffset),
+    }
+}
+
+
+// TODO: speed up clearing the screen
+fn naiveFillScreen(color: Color) void {
+    var x: u16 = 0;
+    var y: u16 = 0;
+    while (y < HEIGHT) : (y += 1) {
+        while (x < WIDTH) : (x += 1) {
+            drawPixel(color, x, y);
+        }
+        x = 0;
+    }
+}
+
+
+
+export fn zigEntry() void {
+    // Welcome to Zig!
+    while (true) {
+        naiveFillScreen(.Black);
+        naiveFillScreen(.White);
+    }
 }
