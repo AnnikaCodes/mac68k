@@ -3,9 +3,10 @@
 /// A pointer to the address at which the framebuffer starts
 const POINTER_TO_FB_START_ADDRESS: *u32 = @intToPtr(*u32, 0x824);
 /// The height of the screen in pixels
-pub const SCREEN_HEIGHT: u32 = 342;
+pub const SCREEN_HEIGHT_PIXELS: u32 = 342;
 /// The width of the screen in pixels
-pub const SCREEN_WIDTH: u32 = 512;
+pub const SCREEN_WIDTH_PIXELS: u32 = 512;
+const SCREEN_WIDTH_BYTES: u32 = @divExact(SCREEN_WIDTH_PIXELS, 8);
 
 /// The possible colors of a pixel
 pub const Color = enum {
@@ -13,10 +14,44 @@ pub const Color = enum {
     White,
 };
 
-// pub const VideoError = error {
-//     XCoordinateTooLarge,
-//     YCoordinateTooLarge,
-// };
+
+fn systemError(_: u16) callconv(.C) void {
+    // Zig bug: binding causes a segfault in compilation
+    asm volatile ("move.l (%sp)+,%d0; .short 0xA9C9");
+}
+
+pub const Letter = enum {
+    A,
+};
+
+// (x, y) is for top left of letter
+// TODO: support black background?
+pub fn drawLetterA(x: u16, y: u16) void {
+    // TODO: errors
+    if (x + 6 > SCREEN_WIDTH_PIXELS) {
+        return;
+    }
+    if (y + 7 > SCREEN_HEIGHT_PIXELS) {
+        return;
+    }
+
+    const fb_start = POINTER_TO_FB_START_ADDRESS.*;
+    const row0 = @intToPtr(*u8, fb_start + @divTrunc(x + (y * SCREEN_WIDTH_PIXELS), 8));
+    const row1 = @intToPtr(*u8, fb_start + @divTrunc(x + ((y + 1) * SCREEN_WIDTH_PIXELS), 8));
+    const row2 = @intToPtr(*u8, fb_start + @divTrunc(x + ((y + 2) * SCREEN_WIDTH_PIXELS), 8));
+    const row3 = @intToPtr(*u8, fb_start + @divTrunc(x + ((y + 3) * SCREEN_WIDTH_PIXELS), 8));
+    const row4 = @intToPtr(*u8, fb_start + @divTrunc(x + ((y + 4) * SCREEN_WIDTH_PIXELS), 8));
+    const row5 = @intToPtr(*u8, fb_start + @divTrunc(x + ((y + 5) * SCREEN_WIDTH_PIXELS), 8));
+    const row6 = @intToPtr(*u8, fb_start + @divTrunc(x + ((y + 6) * SCREEN_WIDTH_PIXELS), 8));
+
+    row0.* = 0b00110000;
+    row1.* = 0b01001000;
+    row2.* = 0b10000100;
+    row4.* = 0b10000100;
+    row3.* = 0b11111100;
+    row5.* = 0b10000100;
+    row6.* = 0b10000100;
+}
 
 /// Draws a pixel on the screen with the given color and coordinates.
 ///
@@ -24,14 +59,14 @@ pub const Color = enum {
 /// This is NOT like your standard Cartesian plane!
 pub fn drawPixel(color: Color, x: u16, y: u16) void {
     // TODO: Use an error when it doesn't break transpilation to C
-    if (y >= SCREEN_HEIGHT) {
+    if (y >= SCREEN_HEIGHT_PIXELS) {
         return;
     }
-    if (x >= SCREEN_WIDTH) {
+    if (x >= SCREEN_WIDTH_PIXELS) {
         return;
     }
 
-    var offset: u32 = y * SCREEN_WIDTH + x;
+    var offset: u32 = y * SCREEN_WIDTH_PIXELS + x;
     const byteOffset: u32 = @divTrunc(offset, 8);
     const bitOffset: u3 = 7 - @intCast(u3, offset % 8);
 
@@ -49,8 +84,8 @@ pub fn drawPixel(color: Color, x: u16, y: u16) void {
 fn naiveFillScreen(color: Color) !void {
     var x: u16 = 0;
     var y: u16 = 0;
-    while (y < SCREEN_HEIGHT) : (y += 1) {
-        while (x < SCREEN_WIDTH) : (x += 1) {
+    while (y < SCREEN_HEIGHT_PIXELS) : (y += 1) {
+        while (x < SCREEN_WIDTH_PIXELS) : (x += 1) {
             try drawPixel(color, x, y);
         }
         x = 0;
@@ -65,7 +100,7 @@ pub fn fastFillScreen(color: Color) void {
         .White => 0x00000000,
     };
 
-    const totalChunks = @divTrunc(SCREEN_HEIGHT * SCREEN_WIDTH, 32);
+    const totalChunks = @divTrunc(SCREEN_HEIGHT_PIXELS * SCREEN_WIDTH_PIXELS, 32);
     var chunksSoFar: u32 = 0;
 
     while (chunksSoFar < totalChunks) : (chunksSoFar += 1) {

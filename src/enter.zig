@@ -15,14 +15,18 @@ export fn zigEntry() void {
     // Welcome to Zig!
     video.fastFillScreen(.White);
 
-    var i: u16 = 0;
-    while (i < video.SCREEN_HEIGHT) : (i += 1) {
-        video.drawPixel(.Black, i, i);
+    // AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+    var x: u16 = 0;
+    var y: u16 = 0;
+    while (y < video.SCREEN_HEIGHT_PIXELS) {
+      while (x < video.SCREEN_WIDTH_PIXELS) {
+        video.drawLetterA(x, y);
+        x += 7;
+      }
+      x = 0;
+      y += 7;
     }
 
-    while (i >= 0) : (i -= 1) {
-        video.drawPixel(.Black, i, @intCast(u16, video.SCREEN_HEIGHT) - i);
-    }
 
     while (true) {}
 }
