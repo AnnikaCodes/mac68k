@@ -24,9 +24,8 @@ pub const Letter = enum {
     A,
 };
 
-// (x, y) is for top left of letter
-// TODO: support black background?
-pub fn drawLetterA(x: u16, y: u16) void {
+// Zig bug: there are issues when the enums come first
+pub fn drawLetter(x: u16, y: u16, isBlack: bool, letter: Letter) void {
     // TODO: errors
     if (x + 6 > SCREEN_WIDTH_PIXELS) {
         return;
@@ -35,6 +34,19 @@ pub fn drawLetterA(x: u16, y: u16) void {
         return;
     }
 
+    const color = switch (isBlack) {
+        true => Color.Black,
+        false => Color.White,
+    };
+    switch (letter) {
+        .A => drawLetterA(x, y, color),
+    }
+}
+
+// (x, y) is for top left of letter
+// TODO: support black background?
+// TODO:
+pub fn drawLetterA(x: u16, y: u16, color: Color) void {
     const fb_start = POINTER_TO_FB_START_ADDRESS.*;
     const row0 = @intToPtr(*u8, fb_start + @divTrunc(x + (y * SCREEN_WIDTH_PIXELS), 8));
     const row1 = @intToPtr(*u8, fb_start + @divTrunc(x + ((y + 1) * SCREEN_WIDTH_PIXELS), 8));
@@ -44,13 +56,26 @@ pub fn drawLetterA(x: u16, y: u16) void {
     const row5 = @intToPtr(*u8, fb_start + @divTrunc(x + ((y + 5) * SCREEN_WIDTH_PIXELS), 8));
     const row6 = @intToPtr(*u8, fb_start + @divTrunc(x + ((y + 6) * SCREEN_WIDTH_PIXELS), 8));
 
-    row0.* = 0b00110000;
-    row1.* = 0b01001000;
-    row2.* = 0b10000100;
-    row4.* = 0b10000100;
-    row3.* = 0b11111100;
-    row5.* = 0b10000100;
-    row6.* = 0b10000100;
+    switch (color) {
+        .White => {
+            row0.* = 0b00011000;
+            row1.* = 0b00100100;
+            row2.* = 0b01000010;
+            row3.* = 0b01111110;
+            row4.* = 0b01000010;
+            row5.* = 0b01000010;
+            row6.* = 0b01000010;
+        },
+        .Black => {
+            row0.* = 0b11100111;
+            row1.* = 0b11011011;
+            row2.* = 0b10111101;
+            row3.* = 0b10000001;
+            row4.* = 0b10111101;
+            row5.* = 0b10111101;
+            row6.* = 0b10111101;
+        },
+    }
 }
 
 /// Draws a pixel on the screen with the given color and coordinates.

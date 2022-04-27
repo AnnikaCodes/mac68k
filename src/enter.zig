@@ -12,21 +12,19 @@ fn wasteTime(amount: u32) void {
     }
 }
 export fn zigEntry() void {
-    // Welcome to Zig!
-    video.fastFillScreen(.White);
+  // Welcome to Zig!
+  video.fastFillScreen(.Black);
 
-    // AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-    var x: u16 = 0;
-    var y: u16 = 0;
-    while (y < video.SCREEN_HEIGHT_PIXELS) {
-      while (x < video.SCREEN_WIDTH_PIXELS) {
-        video.drawLetterA(x, y);
-        x += 7;
-      }
-      x = 0;
-      y += 7;
+  // AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+  var x: u16 = 0;
+  var y: u16 = 0;
+  while (y < video.SCREEN_HEIGHT_PIXELS) {
+    while (x < (video.SCREEN_WIDTH_PIXELS + 7)) {
+      video.drawLetter(x, y, true, .A);
+      x += 8;
     }
-
-
-    while (true) {}
+    x = 0;
+    y += 8;
+  }
+  while (true) {}
 }
