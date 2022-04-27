@@ -1,10 +1,5 @@
 const video = @import("video.zig");
 
-fn systemError(_: u16) callconv(.C) void {
-    // Zig bug: binding causes a segfault in compilation
-    asm volatile ("move.l (%sp)+,%d0; .short 0xA9C9");
-}
-
 fn wasteTime(amount: u32) void {
     var i: u32 = 0;
     while (i < amount * 10000) {

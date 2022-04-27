@@ -13,8 +13,8 @@ mkdir -p build
 
 green_echo "Compiling Zig code..."
 ~/zig/build/zig build-obj -Iinclude/ -target m68k-freestanding src/enter.zig -fno-LLVM -ofmt=c -femit-bin=build/enter.c
-# yes, I hate this too, but Zig expects 128-bit int types that don't exist on m68k
-# as far as I can tell, they aren't actually used....
+# Zig bug: 128-bit integer types are included even when targeting platforms whose C compilers
+# do not support them. This `sed` hack removes them.
 sed -i'.bak' 's/__int128/__INT64_TYPE__/g' build/*.c
 sed -i'.bak' 's/__uint128/__UINT64_TYPE__/g' build/*.c
 m68k-elf-gcc -nostdlib -c -Iinclude/ -o build/enter.o build/enter.c

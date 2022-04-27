@@ -16,7 +16,7 @@ pub const Color = enum {
 
 
 fn systemError(_: u16) callconv(.C) void {
-    // Zig bug: binding causes a segfault in compilation
+    // Zig bug: binding a u16 value causes a segfault in compilation
     asm volatile ("move.l (%sp)+,%d0; .short 0xA9C9");
 }
 
@@ -24,7 +24,8 @@ pub const Letter = enum {
     A,
 };
 
-// Zig bug: there are issues when the enums come first
+// Zig bug: adding any arguments after an enum argument causes Zig to generate
+// C code that doesn't compile
 pub fn drawLetter(x: u16, y: u16, isBlack: bool, letter: Letter) void {
     // TODO: errors
     if (x + 6 > SCREEN_WIDTH_PIXELS) {
