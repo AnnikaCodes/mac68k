@@ -20,13 +20,10 @@ fn systemError(_: u16) callconv(.C) void {
     asm volatile ("move.l (%sp)+,%d0; .short 0xA9C9");
 }
 
-pub const Letter = enum {
-    A,
-};
-
 // Zig bug: adding any arguments after an enum argument causes Zig to generate
 // C code that doesn't compile
-pub fn drawLetter(x: u16, y: u16, isBlack: bool, letter: Letter) void {
+// TODO: index this based on screen indice (per 8x8 not per 1x1)
+pub fn drawCharacter(x: u16, y: u16, character: u8, color: Color) void {
     // TODO: errors
     if (x + 6 > SCREEN_WIDTH_PIXELS) {
         return;
@@ -35,18 +32,24 @@ pub fn drawLetter(x: u16, y: u16, isBlack: bool, letter: Letter) void {
         return;
     }
 
-    const color = switch (isBlack) {
-        true => Color.Black,
-        false => Color.White,
-    };
-    switch (letter) {
-        .A => drawLetterA(x, y, color),
+    // This breaks the switch, idk why
+    if (character == 'Y' or character == 'y') {
+        drawLetterY(x, y, color);
+        return;
+    }
+
+    switch (character) {
+        // Lowercase isn't supported yet
+        // Zig bug: generated C code doesn't compile without the braces
+        'A', 'a' => { drawLetterA(x, y, color); },
+        'G', 'g' => { drawLetterG(x, y, color); },
+        ' ' => { drawSpace(x, y, color); },
+        else => { drawNonExistantSymbol(x, y, color); },
     }
 }
 
 // (x, y) is for top left of letter
 // TODO: support black background?
-// TODO:
 pub fn drawLetterA(x: u16, y: u16, color: Color) void {
     const fb_start = POINTER_TO_FB_START_ADDRESS.*;
     const row0 = @intToPtr(*u8, fb_start + @divTrunc(x + (y * SCREEN_WIDTH_PIXELS), 8));
@@ -59,6 +62,15 @@ pub fn drawLetterA(x: u16, y: u16, color: Color) void {
 
     switch (color) {
         .White => {
+            row0.* = 0b11100111;
+            row1.* = 0b11011011;
+            row2.* = 0b10111101;
+            row3.* = 0b10000001;
+            row4.* = 0b10111101;
+            row5.* = 0b10111101;
+            row6.* = 0b10111101;
+        },
+        .Black => {
             row0.* = 0b00011000;
             row1.* = 0b00100100;
             row2.* = 0b01000010;
@@ -67,14 +79,129 @@ pub fn drawLetterA(x: u16, y: u16, color: Color) void {
             row5.* = 0b01000010;
             row6.* = 0b01000010;
         },
+    }
+}
+
+pub fn drawLetterG(x: u16, y: u16, color: Color) void {
+    const fb_start = POINTER_TO_FB_START_ADDRESS.*;
+
+    const row0 = @intToPtr(*u8, fb_start + @divTrunc(x + (y * SCREEN_WIDTH_PIXELS), 8));
+    const row1 = @intToPtr(*u8, fb_start + @divTrunc(x + ((y + 1) * SCREEN_WIDTH_PIXELS), 8));
+    const row2 = @intToPtr(*u8, fb_start + @divTrunc(x + ((y + 2) * SCREEN_WIDTH_PIXELS), 8));
+    const row3 = @intToPtr(*u8, fb_start + @divTrunc(x + ((y + 3) * SCREEN_WIDTH_PIXELS), 8));
+    const row4 = @intToPtr(*u8, fb_start + @divTrunc(x + ((y + 4) * SCREEN_WIDTH_PIXELS), 8));
+    const row5 = @intToPtr(*u8, fb_start + @divTrunc(x + ((y + 5) * SCREEN_WIDTH_PIXELS), 8));
+    const row6 = @intToPtr(*u8, fb_start + @divTrunc(x + ((y + 6) * SCREEN_WIDTH_PIXELS), 8));
+
+    switch (color) {
+        .White => {
+            row0.* = 0b11000111;
+            row1.* = 0b10111011;
+            row2.* = 0b10111111;
+            row3.* = 0b10100011;
+            row4.* = 0b10111011;
+            row5.* = 0b10111011;
+            row6.* = 0b11000011;
+        },
         .Black => {
-            row0.* = 0b11100111;
-            row1.* = 0b11011011;
-            row2.* = 0b10111101;
-            row3.* = 0b10000001;
-            row4.* = 0b10111101;
-            row5.* = 0b10111101;
-            row6.* = 0b10111101;
+            row0.* = 0b00111000;
+            row1.* = 0b01000100;
+            row2.* = 0b01000000;
+            row3.* = 0b01011100;
+            row4.* = 0b01000100;
+            row5.* = 0b01000100;
+            row6.* = 0b00111100;
+        },
+    }
+}
+
+pub fn drawLetterY(x: u16, y: u16, color: Color) void {
+    const fb_start = POINTER_TO_FB_START_ADDRESS.*;
+
+    const row0 = @intToPtr(*u8, fb_start + @divTrunc(x + (y * SCREEN_WIDTH_PIXELS), 8));
+    const row1 = @intToPtr(*u8, fb_start + @divTrunc(x + ((y + 1) * SCREEN_WIDTH_PIXELS), 8));
+    const row2 = @intToPtr(*u8, fb_start + @divTrunc(x + ((y + 2) * SCREEN_WIDTH_PIXELS), 8));
+    const row3 = @intToPtr(*u8, fb_start + @divTrunc(x + ((y + 3) * SCREEN_WIDTH_PIXELS), 8));
+    const row4 = @intToPtr(*u8, fb_start + @divTrunc(x + ((y + 4) * SCREEN_WIDTH_PIXELS), 8));
+    const row5 = @intToPtr(*u8, fb_start + @divTrunc(x + ((y + 5) * SCREEN_WIDTH_PIXELS), 8));
+    const row6 = @intToPtr(*u8, fb_start + @divTrunc(x + ((y + 6) * SCREEN_WIDTH_PIXELS), 8));
+
+    switch (color) {
+        .White => {
+            row0.* = 0b10111110;
+            row1.* = 0b10111110;
+            row2.* = 0b11011101;
+            row3.* = 0b11100011;
+            row4.* = 0b11110111;
+            row5.* = 0b11110111;
+            row6.* = 0b11110111;
+        },
+        .Black => {
+            row0.* = 0b01000001;
+            row1.* = 0b01000001;
+            row2.* = 0b00100010;
+            row3.* = 0b00011100;
+            row4.* = 0b00001000;
+            row5.* = 0b00001000;
+            row6.* = 0b00001000;
+        },
+    }
+}
+
+pub fn drawSpace(x: u16, y: u16, color: Color) void {
+    const fb_start = POINTER_TO_FB_START_ADDRESS.*;
+
+    const row0 = @intToPtr(*u8, fb_start + @divTrunc(x + (y * SCREEN_WIDTH_PIXELS), 8));
+    const row1 = @intToPtr(*u8, fb_start + @divTrunc(x + ((y + 1) * SCREEN_WIDTH_PIXELS), 8));
+    const row2 = @intToPtr(*u8, fb_start + @divTrunc(x + ((y + 2) * SCREEN_WIDTH_PIXELS), 8));
+    const row3 = @intToPtr(*u8, fb_start + @divTrunc(x + ((y + 3) * SCREEN_WIDTH_PIXELS), 8));
+    const row4 = @intToPtr(*u8, fb_start + @divTrunc(x + ((y + 4) * SCREEN_WIDTH_PIXELS), 8));
+    const row5 = @intToPtr(*u8, fb_start + @divTrunc(x + ((y + 5) * SCREEN_WIDTH_PIXELS), 8));
+    const row6 = @intToPtr(*u8, fb_start + @divTrunc(x + ((y + 6) * SCREEN_WIDTH_PIXELS), 8));
+
+    const fill: u8 = switch (color) {
+        .White => 0b11111111,
+        .Black => 0b00000000,
+    };
+
+    row0.* = fill;
+    row1.* = fill;
+    row2.* = fill;
+    row3.* = fill;
+    row4.* = fill;
+    row5.* = fill;
+    row6.* = fill;
+}
+
+pub fn drawNonExistantSymbol(x: u16, y: u16, color: Color) void {
+    const fb_start = POINTER_TO_FB_START_ADDRESS.*;
+
+    const row0 = @intToPtr(*u8, fb_start + @divTrunc(x + (y * SCREEN_WIDTH_PIXELS), 8));
+    const row1 = @intToPtr(*u8, fb_start + @divTrunc(x + ((y + 1) * SCREEN_WIDTH_PIXELS), 8));
+    const row2 = @intToPtr(*u8, fb_start + @divTrunc(x + ((y + 2) * SCREEN_WIDTH_PIXELS), 8));
+    const row3 = @intToPtr(*u8, fb_start + @divTrunc(x + ((y + 3) * SCREEN_WIDTH_PIXELS), 8));
+    const row4 = @intToPtr(*u8, fb_start + @divTrunc(x + ((y + 4) * SCREEN_WIDTH_PIXELS), 8));
+    const row5 = @intToPtr(*u8, fb_start + @divTrunc(x + ((y + 5) * SCREEN_WIDTH_PIXELS), 8));
+    const row6 = @intToPtr(*u8, fb_start + @divTrunc(x + ((y + 6) * SCREEN_WIDTH_PIXELS), 8));
+
+    switch (color) {
+        .Black => {
+            row0.* = 0b01010100;
+            row1.* = 0b00101010;
+            row2.* = 0b01010100;
+            row3.* = 0b00101010;
+            row4.* = 0b01010100;
+            row5.* = 0b00101010;
+            row6.* = 0b01010100;
+        },
+        .White => {
+            row0.* = 0b11010101;
+            row1.* = 0b10101011;
+            row2.* = 0b11010101;
+            row3.* = 0b10101011;
+            row4.* = 0b11010101;
+            row5.* = 0b10101011;
+            row6.* = 0b11010101;
         },
     }
 }
