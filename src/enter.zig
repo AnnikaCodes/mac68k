@@ -1,4 +1,4 @@
-const video = @import("video.zig");
+const Terminal = @import("terminal.zig").Terminal;
 
 fn wasteTime(amount: u32) void {
     var i: u32 = 0;
@@ -8,18 +8,12 @@ fn wasteTime(amount: u32) void {
 }
 export fn zigEntry() void {
   // Welcome to Zig!
-  video.fastFillScreen(.Black);
+  var term = Terminal {};
+  term.setForegroundColor(.Black);
+  term.clearScreen();
 
   // AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-  var x: u16 = 0;
-  var y: u16 = 0;
-  while (y < video.SCREEN_HEIGHT_PIXELS) {
-    while (x < (video.SCREEN_WIDTH_PIXELS + 7)) {
-      video.drawLetter(x, y, true, .A);
-      x += 8;
-    }
-    x = 0;
-    y += 8;
-  }
+  term.printString("ABCDEFGHIJKLMNÑOPQRSTUVWXYZÅÄÖabcdefghijklmnñopqrstuvwxyzåäö1234567890,;]?.!\n\n");
+  term.printString("SPHINX OF BLACK QUARTZ, JUDGE MY VOW.\n");
   while (true) {}
 }
