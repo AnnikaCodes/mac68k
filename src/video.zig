@@ -1,7 +1,7 @@
 //! Video drivers
 
 /// A pointer to the address at which the framebuffer starts
-const POINTER_TO_FB_START_ADDRESS: *u32 = @intToPtr(*u32, 0x824);
+pub const POINTER_TO_FB_START_ADDRESS: *u32 = @intToPtr(*u32, 0x824);
 /// The height of the screen in pixels
 pub const SCREEN_HEIGHT_PIXELS: u32 = 342;
 /// The width of the screen in pixels

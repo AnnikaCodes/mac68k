@@ -1,6 +1,7 @@
 //! Terminal stuff
 
 const video = @import("video.zig");
+const memcpy = @import("utils.zig").memcpy;
 
 pub const Terminal = struct {
     foregroundColor: video.Color = .Black,
@@ -42,10 +43,14 @@ pub const Terminal = struct {
         if (self.cursorX >= video.SCREEN_WIDTH_CHARACTERS) {
             self.cursorX = 0;
 
-            if (self.cursorX >= video.SCREEN_HEIGHT_CHARACTERS) {
-                // TODO: scroll the screen contents up
-            } else {
-                self.cursorY += 1;
+            self.cursorY += 1;
+            if (self.cursorY >= video.SCREEN_HEIGHT_CHARACTERS) {
+                // Scroll up: keep the cursor in the same place, but move all text onscreen up.
+                // We can achieve this with memcpy
+                const fb_start_ptr = @intToPtr([*]u8, video.POINTER_TO_FB_START_ADDRESS.*);
+                const fb_plus_one_line_of_text_ptr = @intToPtr([*]u8, video.POINTER_TO_FB_START_ADDRESS.* + (video.SCREEN_WIDTH_PIXELS * 8));
+
+                memcpy(fb_start_ptr, fb_plus_one_line_of_text_ptr, video.SCREEN_WIDTH_CHARACTERS * video.SCREEN_HEIGHT_CHARACTERS);
             }
         }
     }
