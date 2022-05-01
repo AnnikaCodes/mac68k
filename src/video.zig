@@ -99,26 +99,26 @@ pub fn drawCharacter(x: u16, y: u16, character: u8, color: Color) void {
         drawLetterY(row0, row1, row2, row3, row4, row5, row6, color);
     // } else if (character == 'Z') {
     //     drawLetterZ(row0, row1, row2, row3, row4, row5, row6, color);
-    // } else if (character == '0') {
-    //     drawNumber0(row0, row1, row2, row3, row4, row5, row6, color);
-    // } else if (character == '1') {
-    //     drawNumber1(row0, row1, row2, row3, row4, row5, row6, color);
-    // } else if (character == '2') {
-    //     drawNumber2(row0, row1, row2, row3, row4, row5, row6, color);
-    // } else if (character == '3') {
-    //     drawNumber3(row0, row1, row2, row3, row4, row5, row6, color);
-    // } else if (character == '4') {
-    //     drawNumber4(row0, row1, row2, row3, row4, row5, row6, color);
-    // } else if (character == '5') {
-    //     drawNumber5(row0, row1, row2, row3, row4, row5, row6, color);
-    // } else if (character == '6') {
-    //     drawNumber6(row0, row1, row2, row3, row4, row5, row6, color);
-    // } else if (character == '7') {
-    //     drawNumber7(row0, row1, row2, row3, row4, row5, row6, color);
-    // } else if (character == '8') {
-    //     drawNumber8(row0, row1, row2, row3, row4, row5, row6, color);
-    // } else if (character == '9') {
-    //     drawNumber9(row0, row1, row2, row3, row4, row5, row6, color);
+    } else if (character == '0') {
+        drawNumber0(row0, row1, row2, row3, row4, row5, row6, color);
+    } else if (character == '1') {
+        drawNumber1(row0, row1, row2, row3, row4, row5, row6, color);
+    } else if (character == '2') {
+        drawNumber2(row0, row1, row2, row3, row4, row5, row6, color);
+    } else if (character == '3') {
+        drawNumber3(row0, row1, row2, row3, row4, row5, row6, color);
+    } else if (character == '4') {
+        drawNumber4(row0, row1, row2, row3, row4, row5, row6, color);
+    } else if (character == '5') {
+        drawNumber5(row0, row1, row2, row3, row4, row5, row6, color);
+    } else if (character == '6') {
+        drawNumber6(row0, row1, row2, row3, row4, row5, row6, color);
+    } else if (character == '7') {
+        drawNumber7(row0, row1, row2, row3, row4, row5, row6, color);
+    } else if (character == '8') {
+        drawNumber8(row0, row1, row2, row3, row4, row5, row6, color);
+    } else if (character == '9') {
+        drawNumber9(row0, row1, row2, row3, row4, row5, row6, color);
     } else if (character == ',') {
         drawComma(row0, row1, row2, row3, row4, row5, row6, color);
     } else if (character == '.') {
@@ -336,6 +336,236 @@ pub fn drawLetterY(row0: *u8, row1: *u8, row2: *u8, row3: *u8, row4: *u8, row5: 
             row4.* = 0b00001000;
             row5.* = 0b00001000;
             row6.* = 0b00001000;
+        },
+    }
+}
+
+pub fn drawNumber0(row0: *u8, row1: *u8, row2: *u8, row3: *u8, row4: *u8, row5: *u8, row6: *u8, color: Color) void {
+    switch (color) {
+        .White => {
+            row0.* = 0b11000111;
+            row1.* = 0b10111011;
+            row2.* = 0b10111011;
+            row3.* = 0b10111011;
+            row4.* = 0b10111011;
+            row5.* = 0b10111011;
+            row6.* = 0b11000111;
+        },
+        .Black => {
+            row0.* = 0b00111000;
+            row1.* = 0b01000100;
+            row2.* = 0b01000100;
+            row3.* = 0b01000100;
+            row4.* = 0b01000100;
+            row5.* = 0b01000100;
+            row6.* = 0b00111000;
+        },
+    }
+}
+
+pub fn drawNumber1(row0: *u8, row1: *u8, row2: *u8, row3: *u8, row4: *u8, row5: *u8, row6: *u8, color: Color) void {
+    switch (color) {
+        .White => {
+            row0.* = 0b11001111;
+            row1.* = 0b10101111;
+            row2.* = 0b11101111;
+            row3.* = 0b11101111;
+            row4.* = 0b11101111;
+            row5.* = 0b11101111;
+            row6.* = 0b10000011;
+        },
+        .Black => {
+            row0.* = 0b00110000;
+            row1.* = 0b01010000;
+            row2.* = 0b00010000;
+            row3.* = 0b00010000;
+            row4.* = 0b00010000;
+            row5.* = 0b00010000;
+            row6.* = 0b01111100;
+        },
+    }
+}
+
+pub fn drawNumber2(row0: *u8, row1: *u8, row2: *u8, row3: *u8, row4: *u8, row5: *u8, row6: *u8, color: Color) void {
+    switch (color) {
+        .White => {
+            row0.* = 0b11000111;
+            row1.* = 0b10111011;
+            row2.* = 0b10111011;
+            row3.* = 0b10111011;
+            row4.* = 0b10111011;
+            row5.* = 0b10111011;
+            row6.* = 0b11000111;
+        },
+        .Black => {
+            row0.* = 0b00111000;
+            row1.* = 0b01000100;
+            row2.* = 0b00001000;
+            row3.* = 0b00010000;
+            row4.* = 0b00100000;
+            row5.* = 0b01000000;
+            row6.* = 0b01111100;
+        },
+    }
+}
+
+pub fn drawNumber3(row0: *u8, row1: *u8, row2: *u8, row3: *u8, row4: *u8, row5: *u8, row6: *u8, color: Color) void {
+    switch (color) {
+        .White => {
+            row0.* = 0b11000111;
+            row1.* = 0b11111011;
+            row2.* = 0b11111011;
+            row3.* = 0b11000011;
+            row4.* = 0b11111011;
+            row5.* = 0b11111011;
+            row6.* = 0b11000111;
+        },
+        .Black => {
+            row0.* = 0b00111000;
+            row1.* = 0b00000100;
+            row2.* = 0b00000100;
+            row3.* = 0b00111100;
+            row4.* = 0b00000100;
+            row5.* = 0b00000100;
+            row6.* = 0b00111000;
+        },
+    }
+}
+
+pub fn drawNumber4(row0: *u8, row1: *u8, row2: *u8, row3: *u8, row4: *u8, row5: *u8, row6: *u8, color: Color) void {
+    switch (color) {
+        .White => {
+            row0.* = 0b10110111;
+            row1.* = 0b10110111;
+            row2.* = 0b10110111;
+            row3.* = 0b10000111;
+            row4.* = 0b11110111;
+            row5.* = 0b11110111;
+            row6.* = 0b11110111;
+        },
+        .Black => {
+            row0.* = 0b01001000;
+            row1.* = 0b01001000;
+            row2.* = 0b01001000;
+            row3.* = 0b01111100;
+            row4.* = 0b00001000;
+            row5.* = 0b00001000;
+            row6.* = 0b00001000;
+        },
+    }
+}
+
+pub fn drawNumber5(row0: *u8, row1: *u8, row2: *u8, row3: *u8, row4: *u8, row5: *u8, row6: *u8, color: Color) void {
+    switch (color) {
+        .White => {
+            row0.* = 0b10000011;
+            row1.* = 0b10111111;
+            row2.* = 0b10111111;
+            row3.* = 0b10000111;
+            row4.* = 0b11111011;
+            row5.* = 0b11111011;
+            row6.* = 0b10000111;
+        },
+        .Black => {
+            row0.* = 0b01111100;
+            row1.* = 0b01000000;
+            row2.* = 0b01000000;
+            row3.* = 0b01111000;
+            row4.* = 0b00000100;
+            row5.* = 0b00000100;
+            row6.* = 0b01111000;
+        },
+    }
+}
+
+pub fn drawNumber6(row0: *u8, row1: *u8, row2: *u8, row3: *u8, row4: *u8, row5: *u8, row6: *u8, color: Color) void {
+    switch (color) {
+        .White => {
+            row0.* = 0b11000111;
+            row1.* = 0b10111111;
+            row2.* = 0b10111111;
+            row3.* = 0b10000111;
+            row4.* = 0b10111011;
+            row5.* = 0b10111011;
+            row6.* = 0b11000111;
+        },
+        .Black => {
+            row0.* = 0b00111000;
+            row1.* = 0b01000000;
+            row2.* = 0b01000000;
+            row3.* = 0b01111000;
+            row4.* = 0b01000100;
+            row5.* = 0b01000100;
+            row6.* = 0b00111000;
+        },
+    }
+}
+
+pub fn drawNumber7(row0: *u8, row1: *u8, row2: *u8, row3: *u8, row4: *u8, row5: *u8, row6: *u8, color: Color) void {
+    switch (color) {
+        .White => {
+            row0.* = 0b10000001;
+            row1.* = 0b11111101;
+            row2.* = 0b11111011;
+            row3.* = 0b11110111;
+            row4.* = 0b11101111;
+            row5.* = 0b11011111;
+            row6.* = 0b10111111;
+        },
+        .Black => {
+            row0.* = 0b01111110;
+            row1.* = 0b00000010;
+            row2.* = 0b00000010;
+            row3.* = 0b00000100;
+            row4.* = 0b00001000;
+            row5.* = 0b00010000;
+            row6.* = 0b00010000;
+        },
+    }
+}
+
+pub fn drawNumber8(row0: *u8, row1: *u8, row2: *u8, row3: *u8, row4: *u8, row5: *u8, row6: *u8, color: Color) void {
+    switch (color) {
+        .White => {
+            row0.* = 0b11000111;
+            row1.* = 0b10111011;
+            row2.* = 0b10111011;
+            row3.* = 0b11000111;
+            row4.* = 0b10111011;
+            row5.* = 0b10111011;
+            row6.* = 0b11000111;
+        },
+        .Black => {
+            row0.* = 0b00111000;
+            row1.* = 0b01000100;
+            row2.* = 0b01000100;
+            row3.* = 0b00111000;
+            row4.* = 0b01000100;
+            row5.* = 0b01000100;
+            row6.* = 0b00111000;
+        },
+    }
+}
+
+pub fn drawNumber9(row0: *u8, row1: *u8, row2: *u8, row3: *u8, row4: *u8, row5: *u8, row6: *u8, color: Color) void {
+    switch (color) {
+        .White => {
+            row0.* = 0b11000111;
+            row1.* = 0b10111011;
+            row2.* = 0b10111011;
+            row3.* = 0b11000011;
+            row4.* = 0b11111011;
+            row5.* = 0b11111011;
+            row6.* = 0b11000111;
+        },
+        .Black => {
+            row0.* = 0b00111000;
+            row1.* = 0b01000100;
+            row2.* = 0b01000100;
+            row3.* = 0b00111100;
+            row4.* = 0b00000100;
+            row5.* = 0b00000100;
+            row6.* = 0b00111000;
         },
     }
 }

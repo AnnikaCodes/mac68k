@@ -3,6 +3,17 @@
 const video = @import("video.zig");
 const memcpy = @import("utils.zig").memcpy;
 
+const POWERS_OF_SIXTEEN: [8]u32 = .{
+    1,
+    16,
+    256,
+    4096,
+    65536,
+    1048576,
+    16777216,
+    268435456,
+};
+
 pub const Terminal = struct {
     foregroundColor: video.Color = .Black,
     cursorX: u16 = 0,
@@ -35,6 +46,30 @@ pub const Terminal = struct {
     pub fn printString(self: *Terminal, comptime string: []const u8) void {
         inline for (string) |char| {
             self.printChar(char);
+        }
+    }
+
+    pub fn printHexNumber(self: *Terminal, number: u32) void {
+        var buffer: [8]u8 = .{0, 0, 0, 0, 0, 0, 0, 0};
+
+        var index: u8 = 0;
+        var n: u32 = number;
+
+        while (n != 0) {
+            const digit: u8 = @intCast(u8, n % 16);
+            if (digit < 0xA) {
+                buffer[index] = '0' + digit;
+            } else {
+                buffer[index] = 'A' + digit - 0xA;
+            }
+
+            n /= 16;
+            index += 1;
+        }
+
+        while (index != 0) {
+            index -= 1;
+            self.printChar(buffer[index]);
         }
     }
 
