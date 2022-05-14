@@ -152,6 +152,16 @@ pub fn drawCharacter(x: u16, y: u16, character: u8, color: Color) void {
     }
 }
 
+// TODO: does this work at runtime?
+pub fn drawBitmap(x: u16, y: u16, comptime bitmap: [7]u8) void {
+    const fb_start = POINTER_TO_FB_START_ADDRESS.*;
+    const pixelY = y * 8;
+    inline for (bitmap) |line, i| {
+        const row = @intToPtr(*u8, fb_start + x + ((pixelY + i) * SCREEN_WIDTH_CHARACTERS));
+        row.* = line;
+    }
+}
+
 // (x, y) is for top left of letter
 pub fn drawLetterA(row0: *u8, row1: *u8, row2: *u8, row3: *u8, row4: *u8, row5: *u8, row6: *u8, color: Color) void {
     switch (color) {
