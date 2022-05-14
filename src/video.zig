@@ -73,30 +73,30 @@ pub fn drawCharacter(x: u16, y: u16, character: u8, color: Color) void {
         drawLetterM(row0, row1, row2, row3, row4, row5, row6, color);
     } else if (character == 'N') {
         drawLetterN(row0, row1, row2, row3, row4, row5, row6, color);
-    // } else if (character == 'O') {
-    //     drawLetterO(row0, row1, row2, row3, row4, row5, row6, color);
-    // } else if (character == 'P') {
-    //     drawLetterP(row0, row1, row2, row3, row4, row5, row6, color);
-    // } else if (character == 'Q') {
-    //     drawLetterQ(row0, row1, row2, row3, row4, row5, row6, color);
-    // } else if (character == 'R') {
-    //     drawLetterR(row0, row1, row2, row3, row4, row5, row6, color);
-    // } else if (character == 'S') {
-    //     drawLetterS(row0, row1, row2, row3, row4, row5, row6, color);
-    // } else if (character == 'T') {
-    //     drawLetterT(row0, row1, row2, row3, row4, row5, row6, color);
-    // } else if (character == 'U') {
-    //     drawLetterU(row0, row1, row2, row3, row4, row5, row6, color);
-    // } else if (character == 'V') {
-    //     drawLetterV(row0, row1, row2, row3, row4, row5, row6, color);
-    // } else if (character == 'W') {
-    //     drawLetterW(row0, row1, row2, row3, row4, row5, row6, color);
-    // } else if (character == 'X') {
-    //     drawLetterX(row0, row1, row2, row3, row4, row5, row6, color);
+        // } else if (character == 'O') {
+        //     drawLetterO(row0, row1, row2, row3, row4, row5, row6, color);
+        // } else if (character == 'P') {
+        //     drawLetterP(row0, row1, row2, row3, row4, row5, row6, color);
+        // } else if (character == 'Q') {
+        //     drawLetterQ(row0, row1, row2, row3, row4, row5, row6, color);
+        // } else if (character == 'R') {
+        //     drawLetterR(row0, row1, row2, row3, row4, row5, row6, color);
+        // } else if (character == 'S') {
+        //     drawLetterS(row0, row1, row2, row3, row4, row5, row6, color);
+        // } else if (character == 'T') {
+        //     drawLetterT(row0, row1, row2, row3, row4, row5, row6, color);
+        // } else if (character == 'U') {
+        //     drawLetterU(row0, row1, row2, row3, row4, row5, row6, color);
+        // } else if (character == 'V') {
+        //     drawLetterV(row0, row1, row2, row3, row4, row5, row6, color);
+        // } else if (character == 'W') {
+        //     drawLetterW(row0, row1, row2, row3, row4, row5, row6, color);
+        // } else if (character == 'X') {
+        //     drawLetterX(row0, row1, row2, row3, row4, row5, row6, color);
     } else if (character == 'Y') {
         drawLetterY(row0, row1, row2, row3, row4, row5, row6, color);
-    // } else if (character == 'Z') {
-    //     drawLetterZ(row0, row1, row2, row3, row4, row5, row6, color);
+        // } else if (character == 'Z') {
+        //     drawLetterZ(row0, row1, row2, row3, row4, row5, row6, color);
     } else if (character == '0') {
         drawNumber0(row0, row1, row2, row3, row4, row5, row6, color);
     } else if (character == '1') {
@@ -121,32 +121,32 @@ pub fn drawCharacter(x: u16, y: u16, character: u8, color: Color) void {
         drawComma(row0, row1, row2, row3, row4, row5, row6, color);
     } else if (character == '.') {
         drawPeriod(row0, row1, row2, row3, row4, row5, row6, color);
-    // } else if (character == ';'' {
-    //     drawSemicolon(row0, row1, row2, row3, row4, row5, row6, color);
-    // } else if (character == ':') {
-    //     drawColon(row0, row1, row2, row3, row4, row5, row6, color);
-    // } else if (character == '!') {
-    //     drawExclamationMark(row0, row1, row2, row3, row4, row5, row6, color);
-    // } else if (character == '?') {
-    //     drawQuestionMark(row0, row1, row2, row3, row4, row5, row6, color);
-    // } else if (character == '\'') {
-    //     drawApostrophe(row0, row1, row2, row3, row4, row5, row6, color);
-    // } else if (character == '"') {
-    //     drawQuote(row0, row1, row2, row3, row4, row5, row6, color);
-    // } else if (character == '-') {
-    //     drawHyphen(row0, row1, row2, row3, row4, row5, row6, color);
-    // } else if (character == '+') {
-    //     drawPlus(row0, row1, row2, row3, row4, row5, row6, color);
-    // } else if (character == '=') {
-    //     drawEquals(row0, row1, row2, row3, row4, row5, row6, color);
-    // } else if (character == '*') {
-    //     drawAsterisk(row0, row1, row2, row3, row4, row5, row6, color);
-    // } else if (character == '%') {
-    //     drawPercent(row0, row1, row2, row3, row4, row5, row6, color);
-    // } else if (character == '<') {
-    //     drawLessThan(row0, row1, row2, row3, row4, row5, row6, color);
-    // } else if (character == '>') {
-    //     drawGreaterThan(row0, row1, row2, row3, row4, row5, row6, color);
+        // } else if (character == ';'' {
+        //     drawSemicolon(row0, row1, row2, row3, row4, row5, row6, color);
+        // } else if (character == ':') {
+        //     drawColon(row0, row1, row2, row3, row4, row5, row6, color);
+        // } else if (character == '!') {
+        //     drawExclamationMark(row0, row1, row2, row3, row4, row5, row6, color);
+        // } else if (character == '?') {
+        //     drawQuestionMark(row0, row1, row2, row3, row4, row5, row6, color);
+        // } else if (character == '\'') {
+        //     drawApostrophe(row0, row1, row2, row3, row4, row5, row6, color);
+        // } else if (character == '"') {
+        //     drawQuote(row0, row1, row2, row3, row4, row5, row6, color);
+        // } else if (character == '-') {
+        //     drawHyphen(row0, row1, row2, row3, row4, row5, row6, color);
+        // } else if (character == '+') {
+        //     drawPlus(row0, row1, row2, row3, row4, row5, row6, color);
+        // } else if (character == '=') {
+        //     drawEquals(row0, row1, row2, row3, row4, row5, row6, color);
+        // } else if (character == '*') {
+        //     drawAsterisk(row0, row1, row2, row3, row4, row5, row6, color);
+        // } else if (character == '%') {
+        //     drawPercent(row0, row1, row2, row3, row4, row5, row6, color);
+        // } else if (character == '<') {
+        //     drawLessThan(row0, row1, row2, row3, row4, row5, row6, color);
+        // } else if (character == '>') {
+        //     drawGreaterThan(row0, row1, row2, row3, row4, row5, row6, color);
     } else {
         drawNonExistantSymbol(row0, row1, row2, row3, row4, row5, row6, color);
     }
@@ -860,7 +860,6 @@ fn naiveFillScreen(color: Color) !void {
         x = 0;
     }
 }
-
 
 /// Quickly fills the screen with a single color.
 pub fn fastFillScreen(color: Color) void {

@@ -51,7 +51,7 @@ pub const Terminal = struct {
     }
 
     pub fn printHexNumber(self: *Terminal, number: u32) void {
-        var buffer: [8]u8 = .{0, 0, 0, 0, 0, 0, 0, 0};
+        var buffer: [8]u8 = .{ 0, 0, 0, 0, 0, 0, 0, 0 };
 
         var index: u8 = 0;
         var n: u32 = number;
@@ -91,6 +91,3 @@ pub const Terminal = struct {
         }
     }
 };
-
-
-
