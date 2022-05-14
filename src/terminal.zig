@@ -42,7 +42,8 @@ pub const Terminal = struct {
         self.incrementScroll();
     }
 
-    // Zig/GCC bug: this fails at
+    // TODO: support formatting
+    // Zig bug: this breaks when not comptime
     pub fn printString(self: *Terminal, comptime string: []const u8) void {
         inline for (string) |char| {
             self.printChar(char);

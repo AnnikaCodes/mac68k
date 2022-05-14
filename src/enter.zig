@@ -11,7 +11,7 @@ export fn zigEntry() void {
   term.setForegroundColor(.Black);
   term.clearScreen();
 
-  term.printString("ABCDEFGHIJKLMNÑOPQRSTUVWXYZÅÄÖabcdefghijklmnñopqrstuvwxyzåäö1234567890,;]?.!\n\n");
+  term.printString("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890,;]?.!\n\n");
   term.printString("SPHINX OF BLACK QUARTZ, JUDGE MY VOW.\n");
 
   var x: u8 = 1;
