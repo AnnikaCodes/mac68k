@@ -1,6 +1,9 @@
 // Entry point for C code
 
 #include "stdint.h"
+#include <stdbool.h>
+#include "video.h"
+
 // Wastes time
 void wasteTime(uint32_t amount) {
     uint32_t i = 0;
@@ -16,8 +19,7 @@ void systemError(uint16_t code) {
 volatile void x() {}
 // Never returns
 void entryPoint() {
-    for (;;) {
-        blackenScreen();
-        whitenScreen();
-    }
+    whitenScreen();
+    drawString(25, 20, "mac68k project", false);
+    for (;;) {}
 }
