@@ -2,9 +2,9 @@
 # Based on HappyJon (https://github.com/jrsharp/HappyJon/blob/master/demo.s
 # and the EMILE bootloader (https://github.com/vivier/EMILE).
 
-.extern zigEntry
+.extern entryPoint
 
-.include "include/macos.i"
+.include "thirdparty/macos.i"
 
 .equ stage1_size, 1024
 .equ sector_size, 512
@@ -29,7 +29,7 @@ Heap128K:    .long   0x00004300          /* system heap size on 128K Mac */
 Heap256K:    .long   0x00008000          /* used internally */
 SysHeapSize: .long   0x00020000          /* system heap size on all machines */
 
-.include "include/floppy.i"
+.include "thirdparty/floppy.i"
 
 start:
 	moveal SysZone,%a0
@@ -60,7 +60,7 @@ end:
 call_zig:
 #	move.w #0xAAAA,%d0
 #	.short 0xA9C9
-    bsr zigEntry
+    bsr entryPoint
 PRAM_buffer2:
 	.long	0
 end2:
