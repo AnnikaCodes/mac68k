@@ -16,10 +16,9 @@ void systemError(uint16_t code) {
    asm("move.l (%sp)+,%d0; .short 0xA9C9");
 }
 
-volatile void x() {}
 // Never returns
 void entryPoint() {
-    whitenScreen();
-    drawString(25, 20, "mac68k project", false);
+    clearScreen(COLOR_WHITE);
+    drawString(25, 20, "mac68k project", COLOR_BLACK);
     for (;;) {}
 }

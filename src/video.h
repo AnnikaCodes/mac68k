@@ -11,12 +11,17 @@
 
 #define FRAMEBUFFER_START_POINTER  (*((volatile uint32_t*) 0x824))
 
+enum Color {
+    COLOR_BLACK,
+    COLOR_WHITE,
+};
+
+
 // Color support?
-void drawCharacter(uint16_t x, uint16_t y, char c, bool isWhiteFg);
-void drawString(uint16_t termX, uint16_t termY, char *s, bool isWhiteFg);
+void drawCharacter(uint16_t x, uint16_t y, char c, enum Color foreground);
+void drawString(uint16_t termX, uint16_t termY, char *s, enum Color foreground);
 
 // TODO: graphics/pixel drawing
-void blackenScreen();
-void whitenScreen();
+void clearScreen(enum Color color);
 
-void drawPixel(uint16_t pixelX, uint16_t pixelY, bool isBlack);
+void drawPixel(uint16_t pixelX, uint16_t pixelY, enum Color color);
