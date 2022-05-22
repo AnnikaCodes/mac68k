@@ -2,7 +2,7 @@
 
 #include "stdint.h"
 #include <stdbool.h>
-#include "video.h"
+#include "terminal.h"
 
 // Wastes time
 void wasteTime(uint32_t amount) {
@@ -18,7 +18,10 @@ void systemError(uint16_t code) {
 
 // Never returns
 void entryPoint() {
-    clearScreen(COLOR_WHITE);
-    drawString(25, 20, "mac68k project", COLOR_BLACK);
+    Terminal t = createTerminal(COLOR_BLACK);
+    resetTerminal(&t);
+    printString(&t, "                          Hello, world!\n");
+    printString(&t, "Let's test line wrapping...............................have a nice day!\n");
+
     for (;;) {}
 }

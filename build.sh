@@ -12,8 +12,9 @@ function green_echo() {
 mkdir -p build
 
 green_echo "Compiling C code..."
-m68k-elf-gcc -nostdlib -mpcrel -m68000  -c -o build/enter.o src/enter.c
+m68k-elf-gcc -nostdlib -mpcrel -m68000 -c -o build/enter.o src/enter.c
 m68k-elf-gcc -nostdlib -mpcrel -m68000 -c -o build/video.o src/video.c
+m68k-elf-gcc -nostdlib -mpcrel -m68000 -c -o build/terminal.o src/terminal.c
 
 green_echo "Compiling 68k assembly..."
 m68k-elf-gcc src/*.s build/*.o  -o "build/linked" -nostdlib
