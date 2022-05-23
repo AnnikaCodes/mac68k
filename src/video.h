@@ -4,8 +4,8 @@
 #include <stdbool.h>
 #define SCREEN_HEIGHT_PIXELS 342
 #define SCREEN_WIDTH_PIXELS 512
-#define SCREEN_HEIGHT_CHARACTERS (SCREEN_HEIGHT_PIXELS / 8)
-#define SCREEN_WIDTH_CHARACTERS (SCREEN_WIDTH_PIXELS / 8)
+#define SCREEN_HEIGHT_BYTES (SCREEN_HEIGHT_PIXELS / 8)
+#define SCREEN_WIDTH_BYTES (SCREEN_WIDTH_PIXELS / 8)
 
 #define FRAMEBUFFER_SIZE_BYTES (SCREEN_HEIGHT_PIXELS * SCREEN_WIDTH_PIXELS / 8)
 
@@ -25,3 +25,4 @@ void drawString(uint16_t termX, uint16_t termY, char *s, enum Color foreground);
 void clearScreen(enum Color color);
 
 void drawPixel(uint16_t pixelX, uint16_t pixelY, enum Color color);
+void scroll(uint16_t lines);

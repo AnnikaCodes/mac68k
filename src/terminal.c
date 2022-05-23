@@ -3,10 +3,6 @@
 #include "video.h"
 #include "terminal.h"
 
-void scroll(Terminal* term, int lines) {
-    // TODO!
-}
-
 void printChar(Terminal* term, char c) {
     if (c == '\n') {
         term->cursorY++;
@@ -23,7 +19,8 @@ void printChar(Terminal* term, char c) {
 
     if (term->cursorY > term->maxY) {
         // Scroll
-        scroll(term, 1);
+        scroll(1);
+        term->cursorY--;
     }
 }
 
@@ -53,8 +50,8 @@ Terminal createTerminal(enum Color textColor) {
     term.cursorX = 0;
     term.cursorY = 0;
 
-    term.maxX = SCREEN_WIDTH_CHARACTERS - 1;
-    term.maxY = SCREEN_HEIGHT_CHARACTERS - 1;
+    term.maxX = SCREEN_WIDTH_BYTES - 1;
+    term.maxY = SCREEN_HEIGHT_BYTES - 1;
 
     term.textColor = textColor;
 
