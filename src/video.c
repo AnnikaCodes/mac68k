@@ -1,7 +1,7 @@
-#include "stdint.h"
-#include "video.h"
-#include "font.h"
-#include "utils.h"
+#include <stdint.h>
+#include <video.h>
+#include <font.h>
+#include <utils.h>
 
 void fillScreen(uint32_t fill) {
     uint32_t i = 0;

@@ -1,7 +1,7 @@
 // Terminal emulation
 
-#include "video.h"
-#include "terminal.h"
+#include <video.h>
+#include <terminal.h>
 
 void printChar(Terminal* term, char c) {
     if (c == '\n') {

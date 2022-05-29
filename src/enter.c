@@ -1,8 +1,8 @@
 // Entry point for C code
 
-#include "stdint.h"
+#include <stdint.h>
 #include <stdbool.h>
-#include "terminal.h"
+#include <terminal.h>
 
 void systemError(uint16_t code) {
    asm("move.l (%sp)+,%d0; .short 0xA9C9");

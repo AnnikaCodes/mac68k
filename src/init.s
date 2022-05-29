@@ -4,7 +4,7 @@
 
 .extern entryPoint
 
-.include "thirdparty/macos.i"
+.include "src/thirdparty/macos.i"
 
 .equ stage1_size, 1024
 .equ sector_size, 512
@@ -29,7 +29,7 @@ Heap128K:    .long   0x00004300          /* system heap size on 128K Mac */
 Heap256K:    .long   0x00008000          /* used internally */
 SysHeapSize: .long   0x00020000          /* system heap size on all machines */
 
-.include "thirdparty/floppy.i"
+.include "src/thirdparty/floppy.i"
 
 start:
 	moveal SysZone,%a0
