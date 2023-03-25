@@ -115,16 +115,16 @@ fn naiveFillScreen(color: Color) !void {
 
 /// Quickly fills the screen with a single color.
 pub fn fastFillScreen(color: Color) void {
-    const fill: u32 = switch (color) {
-        .Black => 0xFFFFFFFF,
-        .White => 0x00000000,
+    const fill: u64 = switch (color) {
+        .Black => 0xFFFF_FFFF_FFFF_FFFF,
+        .White => 0x0000_0000_0000_0000,
     };
 
-    const totalChunks = @divTrunc(SCREEN_HEIGHT_PIXELS * SCREEN_WIDTH_PIXELS, 32);
+    const totalChunks = @divTrunc(SCREEN_HEIGHT_PIXELS * SCREEN_WIDTH_PIXELS, 64);
     var chunksSoFar: u32 = 0;
 
     while (chunksSoFar < totalChunks) : (chunksSoFar += 1) {
-        const next32 = @intToPtr(*u32, POINTER_TO_FB_START_ADDRESS.* + chunksSoFar * 4);
-        next32.* = fill;
+        const next64 = @intToPtr(*u64, POINTER_TO_FB_START_ADDRESS.* + chunksSoFar * 8);
+        next64.* = fill;
     }
 }
