@@ -39,16 +39,15 @@ export fn zigEntry() void {
     }
     video.fastFillScreen(.White);
 
-
     var x: u16 = 0;
     var y: u16 = 0;
     while (y < video.SCREEN_HEIGHT_PIXELS) {
-    while (x < (video.SCREEN_WIDTH_PIXELS + 7)) {
-        video.drawLetter(x, y, false, .A);
-        x += 8;
-    }
-    x = 0;
-    y += 8;
+        while (x < (video.SCREEN_WIDTH_PIXELS + 7)) {
+            video.drawLetter(x, y, false, .A);
+            x += 8;
+        }
+        x = 0;
+        y += 8;
     }
     while (true) {}
 }

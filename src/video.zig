@@ -14,7 +14,6 @@ pub const Color = enum {
     White,
 };
 
-
 pub const Letter = enum {
     A,
 };
@@ -111,7 +110,6 @@ fn naiveFillScreen(color: Color) !void {
         x = 0;
     }
 }
-
 
 /// Quickly fills the screen with a single color.
 pub fn fastFillScreen(color: Color) void {
