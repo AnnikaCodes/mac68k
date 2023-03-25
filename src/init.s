@@ -3,6 +3,7 @@
 # and the EMILE bootloader (https://github.com/vivier/EMILE).
 
 .extern zigEntry
+.global _start
 
 .include "include/macos.i"
 
@@ -13,7 +14,7 @@
 begin:
 
 ID:          .short  0x4C4B              /* boot blocks signature */
-Entry:       bra     start          /* entry point to bootcode */
+Entry:       bra     _start          /* entry point to bootcode */
 Version:     .short  0x4418              /* boot blocks version number */
 PageFlags:   .short  0x00                /* used internally */
 SysName:     pString "foo bar       "    /* System filename */
@@ -31,7 +32,7 @@ SysHeapSize: .long   0x00020000          /* system heap size on all machines */
 
 .include "include/floppy.i"
 
-start:
+_start:
 	moveal SysZone,%a0
 	addal %pc@(SysHeapSize),%a0
 	SetApplBase
@@ -58,8 +59,6 @@ end:
 .fill stage1_size - (end - begin), 1, 0xda
 
 call_zig:
-#	move.w #0xAAAA,%d0
-#	.short 0xA9C9
     bsr zigEntry
 PRAM_buffer2:
 	.long	0
