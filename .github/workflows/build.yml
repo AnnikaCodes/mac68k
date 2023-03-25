@@ -1,0 +1,22 @@
+name: Build
+on:
+  push:
+    branches: [ main, experimental ]
+  pull_request:
+    branches: [ main, experimental ]
+
+jobs:
+  test:
+    strategy:
+      matrix:
+        os: [macos-latest]
+    runs-on: ${{matrix.os}}
+    steps:
+      - uses: actions/checkout@v2
+      - uses: goto-bus-stop/setup-zig@v2
+      - name: Install cross-compiler
+        run: brew install rosco-m68k/toolchain/gcc-cross-m68k@11
+      - name: Build
+        run: ./build.sh
+      - name: Lint
+        run: zig fmt --check src/*.zig
