@@ -31,6 +31,7 @@ void drawCharacter(uint16_t termX, uint16_t termY, char c, enum Color foreground
     for (int x = 0; x < 8; x++) {
         for (int y = 0; y < 8; y++) {
             bool color = FONT[c][x] & 1 << y;
+            // TODO: optimize this by adding characters 8 (or 32!) bits at a time.
             drawPixel(termX * 8 + y, termY * 8 + x, foreground == COLOR_BLACK ? !color : color);
         }
     }
@@ -49,28 +50,26 @@ void drawString(uint16_t termX, uint16_t termY, char *s, enum Color foreground) 
 // TODO: make scrolling faster — 32 bits at a time?
 void scroll(uint16_t lines, enum Color background_color) {
     // memcpy lines 1 + lines to maxY into lines 1 to maxY - lines
-    int offset = (8 * lines * SCREEN_WIDTH_BYTES);// - 64;
-    uint8_t* framebuffer = (uint8_t*) FRAMEBUFFER_START_POINTER;
-    uint8_t background_byte;
+    int offset = (8 * lines * SCREEN_WIDTH_BYTES) / 4;// - 64;
+    uint32_t* framebuffer = (uint32_t*) FRAMEBUFFER_START_POINTER;
+    uint32_t background_32;
     switch (background_color) {
         case COLOR_BLACK:
-            background_byte = 0xFF;
+            background_32 = 0xFFFFFFFF;
             break;
         case COLOR_WHITE:
-            background_byte = 0x00;
+            background_32 = 0x00000000;
             break;
     }
-    for (
-        uint32_t cur_byte = 0;
-        cur_byte <= FRAMEBUFFER_SIZE_BYTES;
-        cur_byte++
-    ) {
-        if (cur_byte + offset < FRAMEBUFFER_SIZE_BYTES) {
-            framebuffer[cur_byte] = framebuffer[cur_byte + offset];
-        } else {
-            // if there's nothing to scroll in, just fill with the background
-            framebuffer[cur_byte] = background_byte;
-        }
+    uint32_t max_32 = FRAMEBUFFER_SIZE_BYTES / 4;
+    uint32_t cur_32 = 0;
+    for (; cur_32 <= max_32 - offset; cur_32++) {
+        framebuffer[cur_32] = framebuffer[cur_32 + offset];
+    }
+
+    // if there's nothing to scroll in, just fill with the background
+    for (; cur_32 < max_32; cur_32++) {
+        framebuffer[cur_32] = background_32;
     }
     // copyMemory(
     //     // source
