@@ -19,7 +19,7 @@ void printChar(Terminal* term, char c) {
 
     if (term->cursorY > term->maxY) {
         // Scroll
-        scroll(1);
+        scroll(1, term->backgroundColor);
         term->cursorY--;
     }
 }
@@ -31,6 +31,9 @@ void printString(Terminal* term, char* s) {
     }
 }
 
+inline uint8_t getBackgroundByte(Terminal* term) {
+
+}
 void resetTerminal(Terminal* term) {
     switch (term->textColor) {
         case COLOR_WHITE:
@@ -44,7 +47,7 @@ void resetTerminal(Terminal* term) {
     term->cursorY = 0;
 }
 
-Terminal createTerminal(enum Color textColor) {
+Terminal createTerminal(enum Color textColor, enum Color backgroundColor) {
     Terminal term;
 
     term.cursorX = 0;
@@ -54,6 +57,7 @@ Terminal createTerminal(enum Color textColor) {
     term.maxY = SCREEN_HEIGHT_BYTES - 1;
 
     term.textColor = textColor;
+    term.backgroundColor = backgroundColor;
 
     return term;
 }

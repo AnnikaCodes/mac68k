@@ -10,10 +10,11 @@ typedef struct {
 
     // current text color
     enum Color textColor;
+    enum Color backgroundColor;
 } Terminal;
 
 void printChar(Terminal* term, char c);
 void printString(Terminal* term, char* str);
 void resetTerminal(Terminal* term);
 
-Terminal createTerminal(enum Color textColor);
+Terminal createTerminal(enum Color textColor, enum Color backgroundColor);

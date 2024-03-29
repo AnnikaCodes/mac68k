@@ -7,13 +7,14 @@
 #define SCREEN_HEIGHT_BYTES (SCREEN_HEIGHT_PIXELS / 8)
 #define SCREEN_WIDTH_BYTES (SCREEN_WIDTH_PIXELS / 8)
 
-#define FRAMEBUFFER_SIZE_BYTES (SCREEN_HEIGHT_PIXELS * SCREEN_WIDTH_PIXELS / 8)
+// FB size should be 21888
+#define FRAMEBUFFER_SIZE_BYTES 21888 // (SCREEN_HEIGHT_PIXELS * SCREEN_WIDTH_PIXELS / 8)
 
 #define FRAMEBUFFER_START_POINTER  (*((volatile uint32_t*) 0x824))
 
 enum Color {
-    COLOR_BLACK,
-    COLOR_WHITE,
+    COLOR_BLACK = 0,
+    COLOR_WHITE = 1,
 };
 
 
@@ -25,4 +26,4 @@ void drawString(uint16_t termX, uint16_t termY, char *s, enum Color foreground);
 void clearScreen(enum Color color);
 
 void drawPixel(uint16_t pixelX, uint16_t pixelY, enum Color color);
-void scroll(uint16_t lines);
+void scroll(uint16_t lines, enum Color background_color);

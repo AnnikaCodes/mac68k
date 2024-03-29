@@ -46,17 +46,40 @@ void drawString(uint16_t termX, uint16_t termY, char *s, enum Color foreground) 
 }
 
 // Scrolls the framebuffer by `lines` lines of 8 pixels each
-// TODO: make scrolling faster!
-void scroll(uint16_t lines) {
+// TODO: make scrolling faster — 32 bits at a time?
+void scroll(uint16_t lines, enum Color background_color) {
     // memcpy lines 1 + lines to maxY into lines 1 to maxY - lines
-    copyMemory(
-        // source
-        (void*)(FRAMEBUFFER_START_POINTER + (8 * lines * SCREEN_WIDTH_BYTES)),
-        // destination
-        (void*)(FRAMEBUFFER_START_POINTER),
-        // length
-        (SCREEN_HEIGHT_PIXELS - (lines * 6)) * SCREEN_WIDTH_BYTES
-    );
+    int offset = (8 * lines * SCREEN_WIDTH_BYTES);// - 64;
+    uint8_t* framebuffer = (uint8_t*) FRAMEBUFFER_START_POINTER;
+    uint8_t background_byte;
+    switch (background_color) {
+        case COLOR_BLACK:
+            background_byte = 0xFF;
+            break;
+        case COLOR_WHITE:
+            background_byte = 0x00;
+            break;
+    }
+    for (
+        uint32_t cur_byte = 0;
+        cur_byte <= FRAMEBUFFER_SIZE_BYTES;
+        cur_byte++
+    ) {
+        if (cur_byte + offset < FRAMEBUFFER_SIZE_BYTES) {
+            framebuffer[cur_byte] = framebuffer[cur_byte + offset];
+        } else {
+            // if there's nothing to scroll in, just fill with the background
+            framebuffer[cur_byte] = background_byte;
+        }
+    }
+    // copyMemory(
+    //     // source
+    //     (uint8_t*)(FRAMEBUFFER_START_POINTER + offset),
+    //     // destination
+    //     (uint8_t*)(FRAMEBUFFER_START_POINTER),
+    //     // length
+    //    FRAMEBUFFER_SIZE_BYTES -offset
+    // );
 }
 
 
